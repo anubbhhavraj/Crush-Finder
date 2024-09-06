@@ -11,7 +11,8 @@
         <h1>Crush Finder 💘</h1>
         <form action="/submit" method="POST">
             <label for="collegeName">College:</label>
-            <input type="text" name="collegeName" id="collegeName" required>
+            <input type="text" name="collegeName" id="collegeName" autocomplete="off" required>
+            <div id="autocomplete-container"></div>
 
             <label for="userName">Your Name:</label>
             <input type="text" name="userName" id="userName" required>
@@ -22,13 +23,21 @@
             <button type="submit">Submit</button>
         </form>
     </div>
+
     
+
     <!-- Floating Hearts Animation -->
     <div class="heart"></div>
     <div class="heart"></div>
     <div class="heart"></div>
     <div class="heart"></div>
     <div class="heart"></div>
-    <div class="heart"></div>
+
+   
+
+ 
+    <script src="/js/colleges.js"></script>
+    <script src="/js/autocomplete.js"></script>
+     
 </body>
 </html>

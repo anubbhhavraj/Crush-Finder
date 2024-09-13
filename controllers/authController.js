@@ -1,10 +1,26 @@
 const axios = require('axios');
 const User = require('../models/User');
 
+const loginPage = (req, res) => {
+    res.render('index'); // Render the index.ejs file
+  };
+
+
+
 const instagramLogin = (req, res) => {
+    
     const redirectUri = encodeURIComponent(process.env.REDIRECT_URI);
-    res.redirect(`https://api.instagram.com/oauth/authorize?client_id=${process.env.INSTAGRAM_CLIENT_ID}&redirect_uri=${redirectUri}&scope=user_profile&response_type=code`);
+    const clientId = process.env.INSTAGRAM_CLIENT_ID;
+    
+    const redirectUrl = `https://api.instagram.com/oauth/authorize?client_id=${clientId}&redirect_uri=${redirectUri}&scope=user_profile&response_type=code`;
+    
+    
+    
+    res.redirect(redirectUrl);
 };
+
+ 
+
 
 const instagramCallback = async (req, res) => {
     const code = req.query.code;
@@ -47,5 +63,6 @@ const instagramCallback = async (req, res) => {
 
 module.exports = {
     instagramLogin,
-    instagramCallback
+    instagramCallback,
+    loginPage
 };

@@ -1,8 +1,11 @@
 body {
     font-family: Arial, sans-serif;
-    background: linear-gradient(120deg, #ff9a9e, #fad0c4, #fad0c4, #fbc2eb);
-    background-size: 300% 300%;
-    animation: backgroundShift 10s ease infinite;
+    background: url('/crushfinderlogo.jpg'),linear-gradient(120deg, #ff9a9e, #fad0c4, #fad0c4, #fbc2eb); ;
+         /* Second layer: Logo */
+    background-size: 54% ,300% 300%; /* Adjusts the size of the gradient and logo */
+    background-position:center, 0% 50% ; /* Position the gradient and logo */
+    background-repeat: no-repeat, no-repeat; /* Ensures no repetition for both backgrounds */
+    animation: backgroundShift 10s ease infinite; /* Keep the gradient animation */
     display: flex;
     justify-content: center;
     align-items: center;
@@ -10,20 +13,20 @@ body {
     margin: 0;
     overflow: hidden;
     position: relative;
+    filter: opacity(2);
+    z-index: 1; /* Full visibility */
 }
-
 @keyframes backgroundShift {
     0% {
-        background-position: 0% 50%;
+        background-position: 0% 50%, center; 
     }
     50% {
-        background-position: 100% 50%;
+        background-position: 100% 50%, center; 
     }
     100% {
-        background-position: 0% 50%;
+        background-position: 0% 50%, center;
     }
 }
-
 .container {
     background: rgba(255, 255, 255, 0.8);
     padding: 30px;
@@ -31,6 +34,7 @@ body {
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
     text-align: center;
     position: relative;
+    z-index: 2;
 }
 
 input {
@@ -40,6 +44,8 @@ input {
     margin: 10px 0;
     border: 1px solid #ccc;
     border-radius: 5px;
+    background-color: rgba(255, 255, 255, 0.9);
+    backdrop-filter: blur(10px);
 }
 
 button {
@@ -53,10 +59,17 @@ button {
     transition: background-color 0.3s ease;
 }
 
+
 button:hover {
     background-color: #e55570;
 }
-
+h1 {
+    font-size: 36px;
+    color: #ff6b81;
+    animation: heartbeat 1.5s ease-in-out infinite;
+    position: relative;
+    z-index: 2;
+}
 /* Floating Hearts Animation */
 @keyframes float {
     0% {
@@ -135,35 +148,15 @@ button:hover {
     animation-delay: 1s;
 }
 
-/* Pulsating Love Icon */
-.pulse-icon {
-    position: absolute;
-    bottom: 10%;
-    left: 10%;
-    width: 50px;
-    height: 50px;
-    background: #ff6b81;
-    border-radius: 50%;
-    animation: pulse 2s infinite ease-in-out;
-}
-
-@keyframes pulse {
-    0% {
-        transform: scale(1);
-    }
-    50% {
-        transform: scale(1.2);
-    }
-    100% {
-        transform: scale(1);
-    }
-}
+ 
 
 /* Heading Animation */
 h1 {
     font-size: 36px;
     color: #ff6b81;
     animation: heartbeat 1.5s ease-in-out infinite;
+    position: relative;
+    z-index: 2; /* Ensure heading is above background */
 }
 
 @keyframes heartbeat {
@@ -195,29 +188,7 @@ h1 {
     background-color: #f1f1f1;
 }
 
-/* Confetti Easter Egg (Crush Found Moment) */
-.confetti {
-    position: absolute;
-    width: 10px;
-    height: 10px;
-    background-color: #ff6b81;
-    animation: fall 5s infinite;
-    border-radius: 50%;
-    top: -10px;
-}
 
-@keyframes fall {
-    0% {
-        transform: translateY(0);
-        opacity: 1;
-    }
-    100% {
-        transform: translateY(100vh);
-        opacity: 0;
-    }
-}
 
-.confetti:nth-child(odd) {
-    background-color: #fad0c4;
-    animation-duration: 4s;
-}
+
+ 

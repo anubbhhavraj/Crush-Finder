@@ -2,11 +2,12 @@ const express = require('express');
 const router = express.Router();
 const userController = require('../controllers/userController');
 
-router.get('/profile', (req, res) => res.render('profile')); // Render profile form
-router.post('/profile', userController.collectProfileInfo);
+// Questions route
+router.get('/questions', userController.getQuestions);
+router.post('/questions', userController.postQuestions);
 
-router.get('/mainpage', (req, res) => res.render('mainpage', { name: req.user.name }));
-router.post('/crushfinder', userController.crushFinder);
-router.post('/brofinder', userController.broFinder);
+// Main page route
+router.get('/main', userController.getMainPage);
+router.post('/findCrush', userController.findCrush);
 
 module.exports = router;

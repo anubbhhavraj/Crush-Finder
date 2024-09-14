@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="/css/styles.css">
+  <title>Main Page</title>
+</head>
+<body>
+  <h1>Welcome, <%= user.fullName %>!</h1>
+  <p>Your Instagram Username: <%= user.username %></p>
+
+  <h2>What would you like to do?</h2>
+  
+  <!-- Crush Finder Section -->
+  <div>
+    <h3>Crush Finder</h3>
+    <form action="/user/findCrush" method="POST">
+      <label for="crushUsername">Enter Crush's Instagram Username:</label>
+      <input type="text" id="crushUsername" name="crushUsername" required>
+      <button type="submit">Find Crush</button>
+    </form>
+  </div>
+
+  <!-- Bro Finder Section -->
+  <div>
+    <h3>Bro Finder</h3>
+    <form action="/user/findCrush" method="POST">
+      <label for="broUsername">Enter Bro's Instagram Username:</label>
+      <input type="text" id="broUsername" name="crushUsername" required>
+      <button type="submit">Find Bro</button>
+    </form>
+  </div>
+</body>
+</html>
+

@@ -1,16 +1,13 @@
 const mongoose = require('mongoose');
 
 const userSchema = new mongoose.Schema({
-    instagramId: String,
-    username: String,
-    name: String,
-    age: Number,
-    college: String,
-    hobbies: [String],
-    crushUsername: String,
-    broUsername: String,
-    compatibility: Number,
+  instagramId: String,
+  username: String,
+  fullName: String,
+  collegeName: String,
+  hobbies: [String],
+  crush: String,
+  likes: [String],
 });
 
-const User = mongoose.model('User', userSchema);
-module.exports = User;
+module.exports = mongoose.model('User', userSchema);

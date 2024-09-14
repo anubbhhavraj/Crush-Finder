@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="/css/styles.css">
+  <title>Questions</title>
+</head>
+<body>
+  <h1>Tell Us About Yourself</h1>
+  <form action="/user/questions" method="POST">
+    <div>
+      <label for="collegeName">College Name:</label>
+      <input type="text" id="collegeName" name="collegeName" required>
+    </div>
+    <div>
+      <label for="hobbies">Hobbies (comma-separated):</label>
+      <input type="text" id="hobbies" name="hobbies" required>
+    </div>
+    <button type="submit">Submit</button>
+  </form>
+</body>
+</html>

@@ -1,38 +1,72 @@
-
 require('dotenv').config();
-
 const express = require('express');
+const mongoose = require('mongoose');
 const session = require('express-session');
 const passport = require('passport');
-const mongoose = require('mongoose');
-
-
+const bodyParser = require('body-parser');
+const InstagramStrategy = require('passport-instagram').Strategy;
+const User = require('./models/User');
 const authRoutes = require('./routes/authRoutes');
 const userRoutes = require('./routes/userRoutes');
 
 const app = express();
 
-// MongoDB Connection
-mongoose.connect(process.env.MONGO_URI, { useNewUrlParser: true, useUnifiedTopology: true })
-    .then(() => console.log('MongoDB Connected'))
-    .catch(err => console.error(err));
-
-// Middleware
-app.use(express.urlencoded({ extended: true }));
-app.use(express.static('public')); // For serving static assets like CSS
+// Middleware setup
+app.use(bodyParser.urlencoded({ extended: false }));
 app.set('view engine', 'ejs');
+app.use(express.static('public'));
 
-// Session and Passport Middleware
-app.use(session({ secret: process.env.SESSION_SECRET, resave: false, saveUninitialized: false }));
+// Session setup
+app.use(session({
+  secret: process.env.SESSION_SECRET,
+  resave: false,
+  saveUninitialized: true,
+}));
+
+// Passport setup
 app.use(passport.initialize());
 app.use(passport.session());
 
-// Routes
-app.get('/', (req, res) => {
-    res.send('<h1>Welcome to Crush Finder</h1><a href="/auth/instagram">Sign in with Instagram</a>');
-});
-app.use(authRoutes);
-app.use(userRoutes);
+// Passport strategy
+passport.use(new InstagramStrategy({
+  clientID: process.env.INSTAGRAM_CLIENT_ID,
+  clientSecret: process.env.INSTAGRAM_CLIENT_SECRET,
+  callbackURL: process.env.REDIRECT_URI,
+}, (accessToken, refreshToken, profile, done) => {
+  // Check if user already exists in the database
+  User.findOne({ instagramId: profile.id }, (err, user) => {
+    if (err) return done(err);
+    if (user) {
+      return done(null, user);
+    } else {
+      // If not, create a new user
+      const newUser = new User({
+        instagramId: profile.id,
+        username: profile.username,
+        fullName: profile.displayName,
+      });
+      newUser.save(err => {
+        if (err) return done(err);
+        return done(null, newUser);
+      });
+    }
+  });
+}));
 
+passport.serializeUser((user, done) => done(null, user.id));
+passport.deserializeUser((id, done) => {
+  User.findById(id, (err, user) => done(err, user));
+});
+
+// MongoDB connection
+mongoose.connect(process.env.MONGO_URI, { useNewUrlParser: true, useUnifiedTopology: true })
+  .then(() => console.log('MongoDB connected'))
+  .catch(err => console.log(err));
+
+// Routes
+app.use('/', authRoutes);
+app.use('/user', userRoutes);
+
+// Start the server
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));

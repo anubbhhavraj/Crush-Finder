@@ -1,26 +1,24 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="/css/styles.css">
-    <title>Result</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Result</title>
+  <link rel="stylesheet" href="/css/style.css">
 </head>
 <body>
-    <div class="container">
-        <h1><%= message %></h1>
-        <a href="/">Try Again</a>
-    </div>
-    
-
-    <!-- Floating Hearts Animation -->
-    <div class="heart"></div>
-    <div class="heart"></div>
-    <div class="heart"></div>
-    <div class="heart"></div>
-    <div class="heart"></div>
-
-    
-    
+  <div class="container">
+    <h1><%= message %></h1>
+    <p>Compatibility: <%= compatibility %>%</p>
+    <% if (commonHobbies.length > 0) { %>
+      <h2>Common Interests:</h2>
+      <ul>
+        <% commonHobbies.forEach(hobby => { %>
+          <li><%= hobby %></li>
+        <% }) %>
+      </ul>
+    <% } %>
+    <a href="/main" class="btn">Back to Main</a>
+  </div>
 </body>
 </html>

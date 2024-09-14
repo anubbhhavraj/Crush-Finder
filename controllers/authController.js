@@ -1,68 +1,46 @@
-const axios = require('axios');
-const User = require('../models/User');
-
-const loginPage = (req, res) => {
-    res.render('index'); // Render the index.ejs file
-  };
+require('dotenv').config();
 
 
+const passport = require('passport');
+const InstagramStrategy = require('passport-instagram').Strategy;
+const User = require('../models/user');
 
-const instagramLogin = (req, res) => {
-    
-    const redirectUri = encodeURIComponent(process.env.REDIRECT_URI);
-    const clientId = process.env.INSTAGRAM_CLIENT_ID;
-    
-    const redirectUrl = `https://api.instagram.com/oauth/authorize?client_id=${clientId}&redirect_uri=${redirectUri}&scope=user_profile&response_type=code`;
-    
-    
-    
-    res.redirect(redirectUrl);
-};
-
- 
-
-
-const instagramCallback = async (req, res) => {
-    const code = req.query.code;
-
+// Setup Instagram Authentication Strategy
+passport.use(new InstagramStrategy({
+    clientID: process.env.INSTAGRAM_CLIENT_ID,
+    clientSecret: process.env.INSTAGRAM_CLIENT_SECRET,
+    callbackURL: process.env.REDIRECT_URI
+}, async (accessToken, refreshToken, profile, done) => {
+    // Find or Create User
     try {
-        const response = await axios.post('https://api.instagram.com/oauth/access_token', null, {
-            params: {
-                client_id: process.env.INSTAGRAM_CLIENT_ID,
-                client_secret: process.env.INSTAGRAM_CLIENT_SECRET,
-                grant_type: 'authorization_code',
-                redirect_uri: process.env.REDIRECT_URI,
-                code: code
-            }
-        });
-
-        const accessToken = response.data.access_token;
-
-        const userResponse = await axios.get('https://graph.instagram.com/me', {
-            params: {
-                fields: 'username',
-                access_token: accessToken
-            }
-        });
-
-        const username = userResponse.data.username;
-        req.session.username = username;
-
-        let existingUser = await User.findOne({ userName: username });
-
-        if (existingUser) {
-            res.redirect('/profile');
-        } else {
-            res.redirect('/register');
+        let user = await User.findOne({ instagramId: profile.id });
+        if (!user) {
+            user = new User({
+                instagramId: profile.id,
+                username: profile.username,
+                name: profile.displayName,
+                age: null, // Ask for age after login
+            });
+            await user.save();
         }
-    } catch (error) {
-        console.error('Instagram authentication error:', error);
-        res.redirect('/');
+       
+        return done(null, profile);
+    } catch (err) {
+        done(err, null);
     }
-};
+}));
 
-module.exports = {
-    instagramLogin,
-    instagramCallback,
-    loginPage
-};
+// Serialize and Deserialize User
+passport.serializeUser((user, done) => done(null, user.id));
+passport.deserializeUser((id, done) => {
+    User.findById(id, (err, user) => done(err, user));
+});
+
+// Redirect to Instagram Login
+exports.loginWithInstagram = passport.authenticate('instagram');
+
+// Instagram Callback
+exports.instagramCallback = passport.authenticate('instagram', {
+    failureRedirect: '/',
+    successRedirect: '/profile'
+});

@@ -1,11 +1,11 @@
-body {
+/* body {
     font-family: Arial, sans-serif;
     background: url('/crushfinderlogo.jpg'),linear-gradient(120deg, #ff9a9e, #fad0c4, #fad0c4, #fbc2eb); ;
-         /* Second layer: Logo */
-    background-size: 54% ,300% 300%; /* Adjusts the size of the gradient and logo */
-    background-position:center, 0% 50% ; /* Position the gradient and logo */
-    background-repeat: no-repeat, no-repeat; /* Ensures no repetition for both backgrounds */
-    animation: backgroundShift 10s ease infinite; /* Keep the gradient animation */
+        
+    background-size: 54% ,300% 300%;  
+    background-position:center, 0% 50% ;  
+    background-repeat: no-repeat, no-repeat; 
+    animation: backgroundShift 10s ease infinite;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -14,7 +14,7 @@ body {
     overflow: hidden;
     position: relative;
     filter: opacity(2);
-    z-index: 1; /* Full visibility */
+    z-index: 1;  
 }
 @keyframes backgroundShift {
     0% {
@@ -70,7 +70,7 @@ h1 {
     position: relative;
     z-index: 2;
 }
-/* Floating Hearts Animation */
+ 
 @keyframes float {
     0% {
         transform: translateY(0);
@@ -150,13 +150,13 @@ h1 {
 
  
 
-/* Heading Animation */
+ 
 h1 {
     font-size: 36px;
     color: #ff6b81;
     animation: heartbeat 1.5s ease-in-out infinite;
     position: relative;
-    z-index: 2; /* Ensure heading is above background */
+    z-index: 2;  
 }
 
 @keyframes heartbeat {
@@ -168,7 +168,7 @@ h1 {
     }
 }
 
-/* Autocomplete dropdown styles */
+ 
 #autocomplete-container {
     position: absolute;
     border: 0px solid #ccc;
@@ -186,9 +186,46 @@ h1 {
 
 #autocomplete-container div:hover {
     background-color: #f1f1f1;
-}
+} */
 
 
-
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f5f5f5;
+    text-align: center;
+  }
+  
+  .container {
+    margin-top: 50px;
+  }
+  
+  h1 {
+    color: #FF6B81;
+  }
+  
+  input[type="text"] {
+    padding: 10px;
+    width: 250px;
+    margin-bottom: 10px;
+  }
+  
+  .btn {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #98FF98;
+    color: white;
+    text-decoration: none;
+    border-radius: 5px;
+  }
+  
+  form {
+    margin-bottom: 20px;
+  }
+  
+  ul {
+    list-style: none;
+    padding: 0;
+  }
+  
 
  

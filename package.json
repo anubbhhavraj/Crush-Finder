@@ -10,10 +10,15 @@
         "axios": "^1.7.7",
         "dotenv": "^10.0.0",
         "ejs": "^3.1.10",
-        "express": "^4.19.2",
+        "express": "^4.21.0",
         "express-session": "^1.18.0",
         "git": "^0.1.5",
         "mongodb": "6.8",
-        "mongoose": "^5.13.22"
-    }
+        "mongoose": "^5.13.22",
+        "passport": "^0.7.0",
+        "passport-instagram": "^1.0.0"
+    },
+    "keywords": [],
+    "author": "",
+    "license": "ISC"
 }

@@ -8,6 +8,7 @@ const InstagramStrategy = require('passport-instagram').Strategy;
 const User = require('./models/User');
 const authRoutes = require('./routes/authRoutes');
 const userRoutes = require('./routes/userRoutes');
+const policyRoutes = require('./routes/policyRoutes'); // Add the policy routes
 
 const app = express();
 
@@ -33,13 +34,11 @@ passport.use(new InstagramStrategy({
   clientSecret: process.env.INSTAGRAM_CLIENT_SECRET,
   callbackURL: process.env.REDIRECT_URI,
 }, (accessToken, refreshToken, profile, done) => {
-  // Check if user already exists in the database
   User.findOne({ instagramId: profile.id }, (err, user) => {
     if (err) return done(err);
     if (user) {
       return done(null, user);
     } else {
-      // If not, create a new user
       const newUser = new User({
         instagramId: profile.id,
         username: profile.username,
@@ -66,6 +65,7 @@ mongoose.connect(process.env.MONGO_URI, { useNewUrlParser: true, useUnifiedTopol
 // Routes
 app.use('/', authRoutes);
 app.use('/user', userRoutes);
+app.use('/', policyRoutes); // Add policy routes
 
 // Start the server
 const PORT = process.env.PORT || 3000;

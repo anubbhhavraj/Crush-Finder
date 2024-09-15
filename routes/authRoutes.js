@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const authController = require('../controllers/authController');
-
+const passport = require('passport');
 
 
 router.get('/', (req, res) => {
@@ -23,6 +23,12 @@ router.get('/', (req, res) => {
     });
   });
 router.get('/auth/instagram', authController.authInstagram);
-router.get('/auth/instagram/callback', authController.authInstagramCallback);
+router.get('/auth/instagram/callback',
+  passport.authenticate('instagram', { failureRedirect: '/' }),
+  (req, res) => {
+    res.redirect('/profile');  // Redirect to profile page on successful authentication
+  }
+);
+
 
 module.exports = router;

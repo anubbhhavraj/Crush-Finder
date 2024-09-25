@@ -33,24 +33,25 @@ passport.use(new InstagramStrategy({
   clientID: process.env.INSTAGRAM_CLIENT_ID,
   clientSecret: process.env.INSTAGRAM_CLIENT_SECRET,
   callbackURL: process.env.REDIRECT_URI,
-}, (accessToken, refreshToken, profile, done) => {
-  User.findOne({ instagramId: profile.id }, (err, user) => {
-    if (err) return done(err);
-    if (user) {
-      return done(null, user);
-    } else {
-      const newUser = new User({
-        instagramId: profile.id,
-        username: profile.username,
-        fullName: profile.displayName,
-      });
-      newUser.save(err => {
-        if (err) return done(err);
-        return done(null, newUser);
-      });
+}, async (accessToken, refreshToken, profile, done) => {
+  try {
+    const existingUser = await User.findOne({ instagramId: profile.id });
+    if (existingUser) {
+      return done(null, existingUser);
     }
-  });
+
+    const newUser = new User({
+      instagramId: profile.id,
+      username: profile.username,
+      accessToken,
+    });
+    await newUser.save();
+    done(null, newUser);
+  } catch (error) {
+    done(error, null);
+  }
 }));
+
 
 passport.serializeUser((user, done) => done(null, user.id));
 passport.deserializeUser((id, done) => {
